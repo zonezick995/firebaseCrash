@@ -16,10 +16,12 @@
 
 package com.google.samples.quickstart.crash.java;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.samples.quickstart.crash.databinding.ActivityMainBinding;
@@ -38,6 +40,8 @@ import com.google.samples.quickstart.crash.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    // NOTE: Declare firebase
     private FirebaseCrashlytics mCrashlytics;
     private CustomKeySamples samples;
 
@@ -59,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         // Add some custom values and identifiers to be included in crash reports
         mCrashlytics.setCustomKey("MeaningOfLife", 42);
         mCrashlytics.setCustomKey("LastUIAction", "Test value");
-        mCrashlytics.setUserId("123456789");
+        mCrashlytics.setCustomKey("Test_keys","Test_Value");
+        mCrashlytics.setUserId("userid1");
 
         // Report a non-fatal exception, for demonstration purposes
         mCrashlytics.recordException(new Exception("Non-fatal exception: something went wrong!"));
@@ -74,16 +79,28 @@ public class MainActivity extends AppCompatActivity {
                 // If catchCrashCheckBox is checked catch the exception and report it using
                 // logException(), Otherwise throw the exception and let Crashlytics automatically
                 // report the crash.
-                if (binding.catchCrashCheckBox.isChecked()) {
-                    try {
+                if (binding.catchCrashCheckBox.isChecked())
+                {
+                    try
+                    {
                         throw new NullPointerException();
-                    } catch (NullPointerException ex) {
+                    }
+                    catch (NullPointerException ex)
+                    {
                         // [START crashlytics_log_and_report]
-                        mCrashlytics.log("NPE caught!");
+                        mCrashlytics.log("Log on Catch_Crash isChecked");
                         mCrashlytics.recordException(ex);
+                        // Show toast
+                        Context context = getApplicationContext();
+                        CharSequence text = "Show log on Crashlytics";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text , duration);
+                        toast.show();
                         // [END crashlytics_log_and_report]
                     }
-                } else {
+                }
+                else
+                {
                     throw new NullPointerException();
                 }
             }

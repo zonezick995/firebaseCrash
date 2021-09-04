@@ -48,7 +48,9 @@ public class CustomKeySamples {
                 .putString("Google Play Services Availability", getGooglePlayServicesAvailability())
                 .putString("Os Version", getOsVersion())
                 .putString("Install Source", getInstallSource())
-                .putString("Preferred ABI", getPreferredAbi()).build());
+                .putString("Preferred ABI", getPreferredAbi())
+                .putString("Check_key", "Value test")
+                .build());
     }
 
     /**
