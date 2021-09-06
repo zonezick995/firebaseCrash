@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //------------------------------------------------------------------------------------
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,22 +71,24 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e(TAG, "Unable to write to file", task.getException());
                                     return;
                                 }
-
                                 loadFileFromDisk();
                             }
                         });
                 }
         });
 
+        //------------------------------------------------------------------------------------
         // Begin tracing app startup tasks.
         mTrace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME);
         Log.d(TAG, "Starting trace");
         mTrace.start();
         loadImageFromWeb();
+
         // Increment the counter of number of requests sent in the trace.
         Log.d(TAG, "Incrementing number of requests counter in trace");
         mTrace.incrementMetric(REQUESTS_COUNTER_NAME, 1);
         loadFileFromDisk();
+
         // Wait for app startup tasks to complete asynchronously and stop the trace.
         new Thread(new Runnable() {
             @Override
