@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.perfmon.java;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -77,16 +78,28 @@ public class MainActivity extends AppCompatActivity {
                 }
         });
 
+        binding.btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, com.google.firebase.quickstart.perfmon.java.test_screen.class);
+                startActivities(new Intent[]{intent});
+            }
+        });
+
         //------------------------------------------------------------------------------------
         // Begin tracing app startup tasks.
         mTrace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME);
         Log.d(TAG, "Starting trace");
         mTrace.start();
+
+        //Call load image
         loadImageFromWeb();
 
         // Increment the counter of number of requests sent in the trace.
         Log.d(TAG, "Incrementing number of requests counter in trace");
         mTrace.incrementMetric(REQUESTS_COUNTER_NAME, 1);
+
+        //Call load Disk
         loadFileFromDisk();
 
         // Wait for app startup tasks to complete asynchronously and stop the trace.
@@ -98,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log.e(TAG, "Unable to wait for startup task completion.");
                 } finally {
+                    // Stop trace
                     Log.d(TAG, "Stopping trace");
                     mTrace.stop();
                     MainActivity.this.runOnUiThread(new Runnable() {
